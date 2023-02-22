@@ -59,10 +59,11 @@ defmodule MyApp.MixProject do
       {:mavu_be_user_ui, github: "mavuio/mavu_be_user_ui", branch: "main"},
       {:mavu_list, "~> 0.2.8"},
       {:exsync, "~> 0.2", only: :dev},
-      {:kino, "~> 0.4.1"},
+      {:kino, "~> 0.5.1"},
       {:ash_postgres, "~> 1.1"},
       {:ash, "~> 2.4.30"},
-      {:ash_phoenix, "~> 1.1"}
+      {:ash_phoenix, "~> 1.1"},
+      {:happy_with, "~> 1.0"}
 
       # {:mavu_snippets_ui, "~> 0.1.15"},
     ]

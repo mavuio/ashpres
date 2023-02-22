@@ -1,0 +1,38 @@
+# create records
+
+## Section
+
+```elixir
+alias MyApp.Rodent
+Ash.Changeset.for_create(Rodent, :create, %{nickname: "Big Jane", type: :mouse})
+```
+
+```elixir
+Ash.Changeset.for_create(Rodent, :create, %{nickname: "Big Jane", type: :beaver})
+```
+
+```elixir
+cs = Ash.Changeset.for_create(Rodent, :create, %{nickname: "big_jane", type: :beaver})
+```
+
+```elixir
+cs |> MyApp.Api.create()
+```
+
+```elixir
+MyApp.Api.get!(Rodent, 1)
+```
+
+```elixir
+# each Ressource is also a valid Ecto-Schema and can be used directly:
+MyApp.Repo.get!(Rodent, 1)
+```
+
+```elixir
+Ash.Changeset.for_create(Rodent, :create, %{nickname: "big_jane", type: :beaver})
+|> MyApp.Api.create!()
+```
+
+```elixir
+MyApp.Api.get!(Rodent, 2) |> MyApp.Api.destroy!()
+```

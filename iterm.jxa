@@ -25,7 +25,7 @@ l[1] = lib.addRow(l[0]);
 ].reduce(lib.sendCmds, l);
 
 [
-    ['cd /www/ashpres', 'iex --sname mavu_phx --cookie MAVU_COOKIE -S mix phx.server'],
+    ['cd /www/ashpres', 'iex --sname $(basename `pwd`)  --cookie cookie_$(basename `pwd`) -S mix phx.server'],
     ['cd /www/ashpres', 'git status'],
     ['cd /www/ashpres'], //'ssh  -t root@vserver3.werkzeugh.at', 'cd /www/ashpres']
 
