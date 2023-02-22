@@ -1,0 +1,15 @@
+<div class="my-4 text-lg font-bold">Birds</div>
+
+<%= if @context.params["rec"] do %>
+  <.live_component
+    module={MyAppBe.BirdLive.BirdEditComponent}
+    id="bird_edit"
+    context={@context}
+    rec_id={@context.params["rec"]}
+  />
+<% end %>
+<.live_component
+  module={MyAppBe.BirdLive.BirdListComponent}
+  id="bird_birdlist"
+  context={@context}
+/>

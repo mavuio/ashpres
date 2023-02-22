@@ -1,0 +1,42 @@
+<div>
+  <.modal
+    id={"#{ @id }"}
+    show={true}
+    on_cancel={JS.patch(MavuUtils.update_params_in_url(@context.current_url, rec: nil))}
+    on_confirm={JS.dispatch("submit", to: "#editform")}
+  >
+    <:title :if={@rec_id == "new"}>new Bird</:title>
+    <:title :if={@rec_id !== "new"}>edit Bird</:title>
+
+    <article class="my-4">
+      <.form
+        :let={f}
+        for={@form}
+        as={:ashdata}
+        phx-change="validate"
+        phx-submit="save"
+        phx-target={@myself}
+        phx-mounted={JS.focus(to: "#form_name")}
+        id="editform"
+      >
+        <%= input(f, :nickname, label: Ash.Resource.Info.field(Bird, :nickname).description) %>
+        <%= input(f, :weight, label: Ash.Resource.Info.field(Bird, :weight).description) %>
+        <div class="sm:flex sm:space-x-4">
+          <%= input(f, :type,
+            using: :select,
+            items:
+              Enum.map(Ash.Resource.Info.field(Bird, :type).constraints[:one_of], &{&1, &1}),
+            label: Ash.Resource.Info.field(Bird, :type).description
+          ) %>
+          <%= input(f, :active,
+            label: Ash.Resource.Info.field(Bird, :active).description,
+            using: :checkbox
+          ) %>
+        </div>
+        <button type="submit" class="invisible" title="needed to submit on Enter">OK</button>
+      </.form>
+    </article>
+    <:confirm>OK</:confirm>
+    <:cancel>Cancel</:cancel>
+  </.modal>
+</div>
