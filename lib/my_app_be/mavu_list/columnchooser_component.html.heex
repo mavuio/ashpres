@@ -1,0 +1,40 @@
+<div class="relative ">
+  <button
+    id={@button_id}
+    class=" font-medium rounded-lg text-sm px-4 py-2.5 hover:opacity-100 opacity-40"
+    type="button"
+    phx-target={@myself}
+    phx-click={
+      JS.push("open_dd")
+      |> JS.show(
+        to: "##{@dd_id}",
+        transition: {"ease-out duration-[700ms]", "opacity-0", "opacity-100"},
+        time: 700
+      )
+    }
+  >
+    <Heroicons.cog outline class="w-5 h-5" />
+  </button>
+
+  <div
+    id={@dd_id}
+    class="hidden z-10 font-normal text-left bg-white rounded shadow-lg min-w-[300px] absolute right-0"
+    phx-target={@myself}
+    phx-click-away={
+      JS.push("close_dd")
+      |> JS.hide(
+        transition: {"ease-out duration-[700ms]", "opacity-100", "opacity-0"},
+        time: 700
+      )
+    }
+  >
+    <%= if @open do %>
+      <.live_component
+        module={MavuList.Live.ColumnchooserComponent}
+        id={"#{@id}mavu_list_cc"}
+        list={@list}
+        close_button_id={@button_id}
+      />
+    <% end %>
+  </div>
+</div>

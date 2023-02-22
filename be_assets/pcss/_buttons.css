@@ -1,0 +1,38 @@
+/* liveview ----------------------------------- start */
+
+.while-submitting {
+  display: none;
+}
+.inputs {
+  display: block;
+}
+
+.phx-submit-loading,
+.phx-change-loading {
+  .while-submitting {
+    display: block;
+  }
+  .inputs {
+    display: none;
+  }
+}
+
+/* liveview ----------------------------------- end */
+
+.btn {
+  @apply transition duration-300 ease-in-out focus:outline-none focus:ring bg-gray-300 hover:bg-gray-700 text-white  py-2 px-4 mr-1 rounded;
+}
+.btn-outline {
+  @apply transition duration-300 ease-in-out focus:outline-none focus:ring border border-gray-700 hover:bg-gray-200 text-gray-700  py-2 px-4 rounded bg-transparent hover:text-gray-900;
+}
+
+.btn-primary {
+  @apply transition duration-300 ease-in-out focus:outline-none focus:ring bg-primary-500 hover:bg-primary-600 text-white  py-2 px-4 mr-1 rounded;
+}
+.btn-outline-primary {
+  @apply transition duration-300 ease-in-out focus:outline-none focus:ring border border-primary-700 hover:bg-primary-700 text-primary-700 hover:text-white  py-2 px-4 rounded;
+}
+
+*[disabled] {
+  @apply opacity-40 cursor-not-allowed;
+}

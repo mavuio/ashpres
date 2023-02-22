@@ -1,0 +1,11 @@
+/* import styles from mavu_nav components: */
+@import "../../lib/my_app_be/mavu_nav/sidebar.css";
+
+/* evtl. override styles */
+/* 
+body {
+  --mavu-sb-width: 400px;
+  --mavu-sb-panel-bg: #232e44;
+  --mavu-sb-panel-bg-light: #29354f;
+  --mavu-sb-accent: #ff0000;
+} */

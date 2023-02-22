@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" · Phoenix Framework">
+      <%= assigns[:page_title] || "MyApp" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/css/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/js/app.js"}>
+    </script>
+  </head>
+  <body class="antialiased bg-white" phx-hook="PhxContextHook" id="liveroot">
+    <ul>
+      <%= if @current_be_user do %>
+        <li>
+          <%= @current_be_user.email %>
+        </li>
+        <li>
+          <.link href={~p"/be/be_users/settings"}>Settings</.link>
+        </li>
+        <li>
+          <.link href={~p"/be/be_users/log_out"} method="delete">Log out</.link>
+        </li>
+      <% else %>
+        <li>
+          <.link href={~p"/be/be_users/register"}>Register</.link>
+        </li>
+        <li>
+          <.link href={~p"/be/be_users/log_in"}>Log in</.link>
+        </li>
+      <% end %>
+    </ul>
+    <%= @inner_content %>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" · Backend">
+      <%= assigns[:page_title] || "MyApp" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/be_css/be_app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/be_js/be_app.js"}>
+    </script>
+  </head>
+  <body>
+    <MyAppBe.MavuNav.SidebarComponents.container
+      context={@context}
+      menu={MyAppBe.Navigation.get_menu()}
+      usermenu={MyAppBe.Navigation.get_usermenu()}
+    >
+      <:sidebar_header>
+        <div class="flex items-center space-x-4">
+          <Heroicons.rocket_launch class="w-6 h-6" />
+          <span>ashpres</span>
+        </div>
+      </:sidebar_header>
+      <:sidebar_footer>
+        <div :if={@current_be_user} class="flex items-center w-full space-x-2">
+          <Heroicons.user_circle solid class="w-8 h-8 opacity-70" />
+          <span class="overflow-hidden">
+            <%= @current_be_user.email %>
+          </span>
+        </div>
+      </:sidebar_footer>
+
+      <:content>
+        <%= @inner_content %>
+      </:content>
+    </MyAppBe.MavuNav.SidebarComponents.container>
+
+    <MyAppBe.MavuNav.SidebarComponents.sidebar_code />
+    <MyAppBe.MavuNav.MenuComponents.menu_code />
+  </body>
+</html>

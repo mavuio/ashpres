@@ -1,0 +1,20 @@
+/_build/
+/cover/
+/deps/
+/doc/
+/logs/
+/.fetch
+erl_crash.dump
+*.ez
+my_app-*.tar
+npm-debug.log
+node_modules
+/config/*.secret.exs
+
+/.elixir_ls
+
+/priv/static/uploads
+#ignore digests, https://elixirforum.com/t/how-do-you-prevent-phx-digest-files-from-being-commited-with-phoenix-1-6/43534/13
+/priv/static/**/*.gz
+/priv/static/**/*-????????????????????????????????.*
+/priv/static/cache_manifest.json

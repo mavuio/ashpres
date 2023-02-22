@@ -1,0 +1,32 @@
+#!/usr/bin/env osascript -l JavaScript
+
+// open with atom
+
+lib = Library("iterm2lib")
+tab = lib.createNewTab()
+
+var r = [],
+    l = [];
+
+l[0] = tab.sessions[0];
+r[0] = lib.addCol(l[0]);
+
+r[2] = lib.addRow(r[0]);
+r[1] = lib.addRow(r[0]);
+
+l[2] = lib.addRow(l[0]);
+l[1] = lib.addRow(l[0]);
+
+
+[
+    ['cd /www/ashpres', 'cd be_assets', 'pnpm watch-css'],
+    ['cd /www/ashpres', 'git status'],
+    ['cd /www/ashpres'] //, 'ssh  -t root@vserver3.werkzeugh.at', 'cd /www/ashpres']
+].reduce(lib.sendCmds, l);
+
+[
+    ['cd /www/ashpres', 'iex --sname mavu_phx --cookie MAVU_COOKIE -S mix phx.server'],
+    ['cd /www/ashpres', 'git status'],
+    ['cd /www/ashpres'], //'ssh  -t root@vserver3.werkzeugh.at', 'cd /www/ashpres']
+
+].reduce(lib.sendCmds, r);

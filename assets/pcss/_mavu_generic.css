@@ -1,0 +1,27 @@
+/* LiveView specific classes for your customizations */
+.phx-no-feedback.invalid-feedback,
+.phx-no-feedback .invalid-feedback {
+  display: none;
+}
+
+.phx-click-loading {
+  /* opacity: 0.5;
+   transition: opacity 1s ease-out; */
+  @apply animate-bounce;
+}
+
+.phx-loading {
+  cursor: wait;
+  opacity: 0.2;
+  transition: opacity 1s ease-out;
+  z-index: 1000;
+}
+.phx-loading * {
+  pointer-events: none;
+}
+
+/* alpinejs: */
+
+[x-cloak] {
+  display: none !important;
+}

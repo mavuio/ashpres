@@ -1,0 +1,70 @@
+<div class={"#{@class}"}>
+  <nav class="flex items-center justify-between px-3 py-3 bg-white " aria-label="Pagination">
+    <%= if MavuUtils.false?(@options[:hide_text]) do %>
+      <div class="hidden sm:block">
+        <p class="text-sm text-gray-700">
+          Showing <span class="font-medium"><%= @items_from %></span>
+          to <span class="font-medium"><%= @items_to %></span>
+          of <span class="font-medium"><%= @items_total %></span>
+          results
+        </p>
+      </div>
+    <% end %>
+    <%= if @pages_total>1 do %>
+      <div class="flex justify-between flex-1 sm:justify-end">
+        <a
+          href="#"
+          class={
+            "relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border
+        border-gray-300 rounded hover:bg-gray-50 #{unless @has_prev, do: "opacity-50 pointer-events-none cursor-not-allowed", else: ""} "
+          }
+          phx-click="list.set_page"
+          phx-value-page={"#{@page - 1}"}
+          phx-target={"#{@target}"}
+          phx-disable-with=" ... "
+        >
+          <svg
+            class="w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </a>
+        <a
+          href="#"
+          class={
+            "relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white
+        border border-gray-300 rounded hover:bg-gray-50 #{unless @has_next, do: "opacity-50 pointer-events-none cursor-not-allowed", else: ""} "
+          }
+          phx-click="list.set_page"
+          phx-value-page={"#{@page + 1}"}
+          phx-target={"#{@target}"}
+          phx-disable-with=" ... "
+        >
+          <svg
+            class="w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </a>
+      </div>
+    <% end %>
+  </nav>
+</div>

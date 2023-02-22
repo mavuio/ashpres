@@ -1,0 +1,38 @@
+/* material design input ----------------------------------- start */
+.md-input {
+  outline: none;
+  height: 40px;
+  /* border-color: transparent; */
+}
+.md-label {
+  @apply absolute pointer-events-none block;
+  display: block;
+  position: absolute;
+  pointer-events: none;
+  transform-origin: top left;
+  transform: translate(10px, -30px) scale(1);
+  transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+    transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+.md-label-focus {
+  transform: translate(0, -65px) scale(0.75);
+  transform-origin: top left;
+}
+
+input.md-input:focus ~ input.md-label,
+input.md-input:not(:placeholder-shown) ~ .md-label {
+  @apply md-label-focus;
+  transform: translate(10px, -50px) scale(0.75);
+  transform-origin: top left;
+  background: white;
+  padding: 0 0.5em;
+}
+
+select.md-input:focus ~ .md-label,
+select.md-input:not([data-value=""]):valid ~ .md-label {
+  @apply md-label-focus;
+  transform: translate(10px, -50px) scale(0.75);
+  transform-origin: top left;
+  background: white;
+  padding: 0 0.5em;
+}
