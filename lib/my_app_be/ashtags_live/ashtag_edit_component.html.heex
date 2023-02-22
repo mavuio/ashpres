@@ -1,0 +1,29 @@
+<div>
+  <.modal
+    id={"#{ @id }"}
+    show={true}
+    on_cancel={JS.patch(MavuUtils.update_params_in_url(@context.current_url, rec: nil))}
+    on_confirm={JS.dispatch("submit", to: "#editform")}
+  >
+    <:title :if={@rec_id == "new"}>new Ashtag</:title>
+    <:title :if={@rec_id !== "new"}>edit Ashtag</:title>
+
+    <article class="my-4">
+      <.form
+        :let={f}
+        for={@form}
+        as={:ashdata}
+        phx-change="validate"
+        phx-submit="save"
+        phx-target={@myself}
+        phx-mounted={JS.focus(to: "#form_name")}
+        id="editform"
+      >
+        <%= input(f, :slug, label: "tag") %>
+        <button type="submit" class="invisible" title="needed to submit on Enter">OK</button>
+      </.form>
+    </article>
+    <:confirm>OK</:confirm>
+    <:cancel>Cancel</:cancel>
+  </.modal>
+</div>

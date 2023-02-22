@@ -1,0 +1,131 @@
+<div id={"#{ @id }"}>
+  <.live_component
+    module={MyAppBe.MavuList.SearchboxComponent}
+    list={@items_filtered}
+    id="list_ashtags_search"
+  />
+
+  <MyAppBe.MavuList.HandleMultipleItemsComponent.buttonbox selected_ids={@selected_ids}>
+    <div class="flex space-x-4">
+      <%!-- <.mybutton
+        phx-click="update_selected_items"
+        phx-target={@myself}
+        phx-value-action="activate"
+      >
+        set active
+      </.mybutton>
+      <.mybutton
+        phx-click="update_selected_items"
+        phx-target={@myself}
+        phx-value-action="deactivate"
+      >
+        set inactive
+      </.mybutton> --%>
+      <.mybutton
+        phx-click="update_selected_items"
+        phx-target={@myself}
+        phx-value-action="delete"
+        data={[confirm: "Are you sure?"]}
+      >
+        <Heroicons.trash class="w-5 h-5 mr-4 " />delete
+      </.mybutton>
+    </div>
+  </MyAppBe.MavuList.HandleMultipleItemsComponent.buttonbox>
+
+  <div class="relative px-10 mt-8 ">
+    <div class="absolute z-10 top-2 right-12">
+      <.live_component
+        module={MyAppBe.MavuList.ColumnchooserComponent}
+        list={@items_filtered}
+        id="items_filtered_columnchooser"
+      />
+    </div>
+    <div class="flex flex-col ">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th>
+                    <MyAppBe.Components.RowSelection.toggler
+                      row_id={:all}
+                      selected_ids={@selected_ids}
+                      phx_target={@myself}
+                    />
+                  </th>
+                  <%= for col <- @items_filtered.metadata.columns do %>
+                    <th class="px-6 py-3 text-xs font-bold tracking-wider text-left text-black ">
+                      <MyAppBe.MavuList.LabelComponent.paint
+                        list={@items_filtered}
+                        name={col.name}
+                      />
+                    </th>
+                  <% end %>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <%= for row <- @items_filtered.data  do %>
+                  <tr class="">
+                    <td class="text-center">
+                      <MyAppBe.Components.RowSelection.toggler
+                        row_id={row.id}
+                        selected_ids={@selected_ids}
+                        phx_target={@myself}
+                      />
+                    </td>
+                    <%= for col <- @items_filtered.metadata.columns do %>
+                      <%= case {col[:type], MavuList.get_colval(row,@items_filtered.conf,col.name), col.name} do %>
+                        <% {_,val,:name} -> %>
+                          <td class="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
+                            <.link patch={
+                              MavuUtils.update_params_in_path(@context.current_url, rec: row.id)
+                            }>
+                              <%= val %>
+                            </.link>
+                          </td>
+                        <% {_,val,:active} -> %>
+                          <td class="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
+                            <Heroicons.check :if={val} solid class="w-6 h-6" />
+                          </td>
+                        <% {_,val,colname} -> %>
+                          <td class={"px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap #{ case colname, do: (:name -> "font-bold"; _ -> "") }"}>
+                            <%= val %>
+                          </td>
+                      <% end %>
+                    <% end %>
+                    <td class="flex items-center h-12 space-x-3 text-gray-500">
+                      <.link patch={
+                        MavuUtils.update_params_in_path(@context.current_url, rec: row.id)
+                      }>
+                        <Heroicons.pencil class="w-5 h-5" />
+                      </.link>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+
+          <div class="mt-8 mb-4">
+            <.link
+              patch={MavuUtils.update_params_in_path(@context.current_url, rec: "new")}
+              phx-target={@myself}
+            >
+              <Heroicons.plus outline class="w-8 h-8" />
+            </.link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <.live_component
+    module={MyAppBe.MavuList.PaginationComponent}
+    list={@items_filtered}
+    class="mx-8 mt-8 mb-4"
+    id="paginate_list"
+  />
+</div>

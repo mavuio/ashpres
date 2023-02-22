@@ -13,6 +13,7 @@ defmodule MyAppBe.Navigation do
         %{label: "home", navigate: ~p"/be"},
         %{label: "Rodents", navigate: ~p"/be/rodents"},
         %{label: "Birds", navigate: ~p"/be/birds"},
+        %{label: "Tags", navigate: ~p"/be/tags"},
         %{label: "Backend-Users", navigate: ~p"/be/be_user_manager"}
       ]
     }

@@ -1,0 +1,18 @@
+<section class={"#{@class}"}>
+  <.live_component
+    module={MyAppBe.AshtagChooserComponent}
+    context={@context}
+    id="filter_tags"
+    tags={@value}
+    on_change={&on_tag_change/2}
+    placeholder="Filter nach Tags"
+    class="flex items-center space-x-4"
+  >
+    <script>
+      window.addEventListener(`phx:ashtags_changed`, (e) => {
+        let tag_slugs=e.detail.tag_slugs.split(',');
+        window.PhxContext.pushEventTo('<%= @target %>','list.set_filter', {filter_updates: {<%= @fieldname %>: tag_slugs} });
+      });
+    </script>
+  </.live_component>
+</section>

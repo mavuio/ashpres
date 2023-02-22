@@ -1,0 +1,99 @@
+<div class={@class} x-data={"ashtagchooser('#{@id}',#{length(@found_tags)},'#{@kw}')"} id={@id}>
+  <section class="flex flex-wrap items-center px-1 py-0 space-x-2 border border-gray-300 rounded ">
+    <span
+      :for={tag <- @chosen_tags}
+      title={tag.id}
+      class="flex items-center p-1 text-xs bg-red-300 rounded"
+    >
+      <%= tag.slug %>
+      <.link phx-click="remove_tag" phx-value_id={tag.id} phx-target={@myself}>
+        <Heroicons.x_mark class="w-3 h-3 cursor-pointer" />
+      </.link>
+    </span>
+
+    <article class="flex-auto">
+      <input
+        class="w-full border-none focus-none !ring-0 text-sm "
+        type="text"
+        value={@kw}
+        id={@input_id <> "_search"}
+        autocomplete="off"
+        placeholder={assigns[:placeholder] || "tags"}
+        x-on:keydown.enter.prevent="handleEnter($event)"
+        x-on:keydown.up.prevent="select(-1)"
+        x-on:keydown.down.prevent="select(1)"
+        x-model.debounce.250ms="kw"
+      />
+      <div :if={@found_tags} class="absolute z-50 mb-8 bg-white shadow-lg">
+        <%= for {tag,idx} <- @found_tags |> Enum.with_index(1) do %>
+          <.link
+            href="#"
+            class="block px-4 py-2 text-gray-600 border hover:bg-blue-200 hover:text-black"
+            x-bind:class={"(selectedRowNum==#{idx})?'!bg-gray-200':''"}
+            phx-click="add_tag"
+            phx-value_id={tag.id}
+            phx-target={@myself}
+            id={"chooser_row_#{idx}"}
+            x-on:click="kw=''"
+          >
+            <%= tag.slug %>
+          </.link>
+        <% end %>
+      </div>
+    </article>
+  </section>
+
+  <%= render_slot(@inner_block, @chosen_tags) %>
+
+  <script>
+    (() => {
+
+        const defineComponent = () => {
+
+            Alpine.data('ashtagchooser', (id, maxCount,kw) => ({
+                selectedRowNum: 0,
+                phxTarget: `#${id}`,
+                kw: kw,
+                handleEnter(event) {
+                  if(this.selectedRowNum>0) {
+                     const row=document.getElementById(`chooser_row_${this.selectedRowNum}`);
+                     if(!row) {
+                        console.log('row not found',`chooser_row_${this.selectedRowNum}`)
+                     }
+                     row.dispatchEvent(new Event('click', { bubbles: true }));
+                  } else {
+                    event.target.blur();
+                    event.target.focus();
+                  }
+
+                  
+                },
+                init() {
+                  this.$watch('kw', value => this.setKeyword(value))
+                },
+                setKeyword(value) {
+                  window.PhxContext.pushEventTo(this.phxTarget,'change_kw', value);                      
+                },
+                select(dir) {
+                  if(dir>0) {
+                    if( this.selectedRowNum < maxCount) {
+                      this.selectedRowNum++;
+                    }
+                  }
+                  if(dir<0) {
+                    if( this.selectedRowNum > 0) {
+                      this.selectedRowNum--;
+                    }
+                  }
+                }
+
+            }));
+        };
+        if (window.Alpine) {
+            defineComponent.apply();
+        } else {
+            document.addEventListener('alpine:init', defineComponent)
+        }
+    })();
+  </script>
+</div>

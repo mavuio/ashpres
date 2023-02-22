@@ -1,0 +1,15 @@
+<div class="my-4 text-lg font-bold">Tags</div>
+
+<%= if @context.params["rec"] do %>
+  <.live_component
+    module={MyAppBe.AshtagLive.AshtagEditComponent}
+    id="ashtag_edit"
+    context={@context}
+    rec_id={@context.params["rec"]}
+  />
+<% end %>
+<.live_component
+  module={MyAppBe.AshtagLive.AshtagListComponent}
+  id="ashtag_ashtaglist"
+  context={@context}
+/>

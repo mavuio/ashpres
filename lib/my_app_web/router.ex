@@ -46,6 +46,8 @@ defmodule MyAppWeb.Router do
       live "/be_user_manager", BeUserUi.BeUserLive, :index
       live "/rodents", RodentsLive, :index
       live "/birds", BirdsLive, :index
+      live("/tags/", AshtagsLive, :index)
+
       live "/be_users/settings", BeAccounts.BeUserSettingsLive, :edit
 
       live "/be_users/settings/confirm_email/:token",
