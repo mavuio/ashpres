@@ -19,7 +19,7 @@
         phx-mounted={JS.focus(to: "#form_name")}
         id="editform"
       >
-        <%= input(f, :name, label: "name") %>
+        <%= input(f, :nickname, label: Ash.Resource.Info.field(Rodent, :nickname).description) %>
         <div class="sm:flex sm:space-x-4">
           <%= input(f, :type,
             using: :select,

@@ -16,16 +16,19 @@ defmodule MyApp.Rodent do
     attribute :nickname, :string do
       allow_nil? false
       constraints match: ~r/^[a-z0-9_]+$/
+      description "Nickname"
     end
 
     attribute :active, :boolean do
       allow_nil? false
       default false
+      description "is active?"
     end
 
     attribute :type, :atom do
       constraints one_of: [:squirrel, :beaver, :mouse]
       default :unknown
+      description "Type"
     end
 
     create_timestamp :inserted_at
@@ -45,4 +48,15 @@ defmodule MyApp.Rodent do
       pagination offset?: true
     end
   end
+
+  code_interface do
+    define_for MyApp.Api
+    define :get_by_nickname, action: :read, get_by_identity: :nickname
+  end
+
+  def clear_all() do
+    MyApp.Repo.delete_all(__MODULE__)
+  end
+
+  use Accessible
 end

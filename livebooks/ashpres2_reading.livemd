@@ -7,13 +7,37 @@ alias MyApp.Rodent
 ## Section
 
 ```elixir
+# after adding
+# identities do
+#   identity :nickname, [:nickname]
+# end
+# this should err if executed for existing nickname
+
 Ash.Changeset.for_create(Rodent, :create, %{nickname: "big_jane", type: :beaver})
 |> MyApp.Api.create!()
 ```
 
 ```elixir
-Ash.Changeset.for_create(Rodent, :create, %{nickname: "jane", type: :squirrel, active: true})
+Ash.Changeset.for_create(Rodent, :create, %{nickname: "jeff", type: :squirrel, active: true})
 |> MyApp.Api.create!()
+```
+
+```elixir
+MyApp.Api.get(Rodent, nickname: "big_jane")
+```
+
+```elixir
+# after adding:
+# code_interface do
+#   define_for MyApp.Api
+#   define :get_by_nickname, action: :read, get_by_identity: :nickname
+# end
+
+Rodent.get_by_nickname("big_jane")
+```
+
+```elixir
+Rodent.get_by_nickname!("big_jane")
 ```
 
 ```elixir

@@ -43,9 +43,9 @@ defmodule MyAppBe.RodentLive.RodentListComponent do
     %{
       columns: [
         %{name: :id, label: "ID"},
-        %{name: :name, label: "name"},
-        %{name: :active, label: "active"},
-        %{name: :type, label: "type"}
+        %{name: :nickname, label: Ash.Resource.Info.field(Rodent, :nickname).description},
+        %{name: :active, label: Ash.Resource.Info.field(Rodent, :active).description},
+        %{name: :type, label: Ash.Resource.Info.field(Rodent, :type).description}
       ],
       api: Api,
       filter: &listfilter/3
@@ -53,7 +53,7 @@ defmodule MyAppBe.RodentLive.RodentListComponent do
   end
 
   def default_tweaks(_context) do
-    %{sort_by: [[:name, :asc]]}
+    %{sort_by: [[:nickname, :asc]]}
   end
 
   def listfilter(source, _conf, tweaks) do
