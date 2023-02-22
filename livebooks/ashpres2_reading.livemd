@@ -1,0 +1,47 @@
+# ashpres_2
+
+```elixir
+alias MyApp.Rodent
+```
+
+## Section
+
+```elixir
+Ash.Changeset.for_create(Rodent, :create, %{nickname: "big_jane", type: :beaver})
+|> MyApp.Api.create!()
+```
+
+```elixir
+Ash.Changeset.for_create(Rodent, :create, %{nickname: "jane", type: :squirrel, active: true})
+|> MyApp.Api.create!()
+```
+
+```elixir
+Ash.Query.for_read(Rodent, :read)
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```
+
+```elixir
+require Ash.Query
+
+Ash.Query.for_read(Rodent, :read)
+|> Ash.Query.filter(active == true)
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```
+
+```elixir
+Ash.Query.for_read(Rodent, :read)
+|> Ash.Query.filter(active: false, type: :squirrel)
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```
+
+https://ash-hq.org/docs/module/ash/latest/ash-filter
+
+```elixir
+Ash.Query.for_read(Rodent, :read_active)
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```

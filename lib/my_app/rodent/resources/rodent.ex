@@ -1,14 +1,13 @@
 defmodule MyApp.Rodent do
-  use Ash.Resource,
-    data_layer: AshPostgres.DataLayer
+  use Ash.Resource, data_layer: AshPostgres.DataLayer
 
   postgres do
     table "rodents"
     repo(MyApp.Repo)
   end
 
-  actions do
-    defaults [:create, :read, :update, :destroy]
+  identities do
+    identity :nickname, [:nickname]
   end
 
   attributes do
@@ -34,6 +33,14 @@ defmodule MyApp.Rodent do
   end
 
   actions do
+    defaults [:create, :read, :update, :destroy]
+  end
+
+  actions do
+    read :read_active do
+      filter expr(active == true)
+    end
+
     read :mavu_list do
       pagination offset?: true
     end

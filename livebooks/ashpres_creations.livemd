@@ -1,4 +1,8 @@
-# create records
+# ashpres_1
+
+```elixir
+MyApp.Repo.delete_all(MyApp.Rodent)
+```
 
 ## Section
 
