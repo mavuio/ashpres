@@ -27,14 +27,14 @@ defmodule MyApp.Bird do
     end
 
     attribute :type, :atom do
-      constraints one_of: [:squirrel, :beaver, :mouse]
+      constraints one_of: [:dove, :sparrow, :woodpecker, :cuckoo]
       default :unknown
       description "Type"
     end
 
     attribute :weight, :decimal do
       allow_nil? true
-      description "Weight (kg)"
+      description "Weight (g)"
     end
 
     create_timestamp :inserted_at
