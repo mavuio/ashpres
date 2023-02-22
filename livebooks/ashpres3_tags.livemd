@@ -4,16 +4,91 @@
 
 ```elixir
 alias MyApp.Bird
+require Ash.Query
 
 Bird
 |> Ash.Query.new()
 |> Ash.Query.load([:tags])
 |> MyApp.Api.read!()
-|> Enum.map(fn a -> a |> Map.from_struct() |> Map.take([:id, :name, :tags]) end)
+|> Enum.map(fn a -> a |> Map.from_struct() |> Map.take([:id, :nickname, :tags]) end)
 |> Enum.map(fn a ->
   a
   |> Map.update(:tags, "", fn x ->
     x |> Enum.map(fn a -> a.slug end) |> Enum.join(",")
   end)
 end)
+|> Kino.DataTable.new()
+```
+
+```elixir
+Bird
+|> Ash.Query.new()
+|> Ash.Query.filter(nickname: "mira")
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```
+
+```elixir
+Bird
+|> Ash.Query.new()
+|> Ash.Query.filter(nickname == "mira")
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```
+
+```elixir
+Bird
+|> Ash.Query.new()
+|> Ash.Query.filter(fragment("? ilike ?", nickname, "%RA%"))
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```
+
+```elixir
+
+```
+
+```elixir
+kw = "%ra%"
+
+Bird
+|> Ash.Query.new()
+|> Ash.Query.filter(fragment("? ilike ?", nickname, ^kw))
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```
+
+```elixir
+kw = "%ra%"
+weight = 80
+
+basequery
+|> Ash.Query.filter(fragment("? ilike ?", nickname, ^kw))
+|> Ash.Query.filter(weight > ^weight)
+|> MyApp.Api.read!()
+|> Kino.DataTable.new()
+```
+
+```elixir
+kw = "%ra%"
+
+Bird
+|> Ash.Query.new()
+|> Ash.Query.load([:tags])
+|> Ash.Query.filter(fragment("? ilike ?", nickname, ^kw))
+# |> Ash.Query.filter(tags.slug=="red")
+# |> Ash.Query.filter(fragment("? ilike ?", tags.slug, "%re%"))
+|> MyApp.Api.read!()
+|> Enum.map(fn a -> a |> Map.from_struct() |> Map.take([:id, :nickname, :tags]) end)
+|> Enum.map(fn a ->
+  a
+  |> Map.update(:tags, "", fn x ->
+    x |> Enum.map(fn a -> a.slug end) |> Enum.join(",")
+  end)
+end)
+|> Kino.DataTable.new()
+```
+
+```elixir
+
 ```

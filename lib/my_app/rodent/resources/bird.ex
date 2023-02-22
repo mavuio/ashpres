@@ -53,6 +53,11 @@ defmodule MyApp.Bird do
     read :mavu_list do
       pagination offset?: true
     end
+
+    read :read_ecto do
+      prepare build(load: [:tags])
+      modify_query {MyApp.ModifyBirdQuery, :modify, []}
+    end
   end
 
   relationships do
