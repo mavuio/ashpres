@@ -25,6 +25,12 @@ defmodule MyAppBe.AshtagChooserComponent do
     }
   end
 
+  def prepopulate_tags(set_tags_str) when is_binary(set_tags_str) do
+    set_tags_str
+    |> String.split(" ")
+    |> prepopulate_tags()
+  end
+
   def prepopulate_tags(tag_ids_or_slugs) when is_list(tag_ids_or_slugs) do
     tag_ids_or_slugs
     |> Enum.map(&Ashtags.get_tag_by_uuid_or_slug/1)

@@ -12,6 +12,7 @@ defmodule MyAppBe.BirdLive.BirdListComponent do
     items_query =
       Bird
       |> Ash.Query.for_read(:mavu_list)
+      |> Ash.Query.load([:tags])
 
     # first load
     {:ok,
@@ -44,9 +45,10 @@ defmodule MyAppBe.BirdLive.BirdListComponent do
       columns: [
         %{name: :id, label: "ID"},
         %{name: :nickname, label: Ash.Resource.Info.field(Bird, :nickname).description},
+        %{name: :type, label: Ash.Resource.Info.field(Bird, :type).description},
         %{name: :active, label: Ash.Resource.Info.field(Bird, :active).description},
         %{name: :weight, label: Ash.Resource.Info.field(Bird, :weight).description},
-        %{name: :type, label: Ash.Resource.Info.field(Bird, :type).description}
+        %{name: :tags, label: "tags"}
       ],
       api: Api,
       filter: &listfilter/3
@@ -60,18 +62,34 @@ defmodule MyAppBe.BirdLive.BirdListComponent do
   def listfilter(source, _conf, tweaks) do
     keyword = tweaks[:keyword]
 
-    if MavuUtils.present?(keyword) do
-      if MavuUtils.to_int(keyword) do
-        id = MavuUtils.to_int(keyword)
+    source =
+      if MavuUtils.present?(keyword) do
+        if MavuUtils.to_int(keyword) do
+          id = MavuUtils.to_int(keyword)
 
-        source
-        |> Ash.Query.filter(id == ^id)
+          source
+          |> Ash.Query.filter(id == ^id)
+        else
+          kwlike = "%#{keyword}%"
+
+          source
+          |> Ash.Query.filter(fragment("? ilike ?", nickname, ^kwlike))
+        end
       else
-        kwlike = "%#{keyword}%"
-
         source
-        |> Ash.Query.filter(fragment("? ilike ?", nickname, ^kwlike))
       end
+
+    if MavuUtils.present?(tweaks[:filters]) do
+      filters =
+        tweaks[:filters]
+        |> Map.to_list()
+        |> Enum.map(fn
+          {key, items} when is_list(items) -> {key, [slug: [in: items]]}
+          x -> x
+        end)
+        |> Map.new()
+
+      source |> Ash.Query.do_filter(filters)
     else
       source
     end
@@ -87,6 +105,10 @@ defmodule MyAppBe.BirdLive.BirdListComponent do
        socket.assigns.items_query,
        :items_filtered
      )}
+  end
+
+  def rand_part() do
+    Ecto.UUID.generate() |> String.split("-") |> hd()
   end
 
   # --- selection stuff start
@@ -147,5 +169,53 @@ defmodule MyAppBe.BirdLive.BirdListComponent do
      |> assign(:selected_ids, socket.assigns.items_filtered.data |> Enum.map(&"#{&1.id}"))}
   end
 
+  def handle_event(
+        "set_tags_for_items",
+        %{"type" => type_str, "tag-ids" => tag_ids_str} = _msg,
+        socket
+      )
+      when type_str in ~w(add remove) do
+    tag_ids = String.split(tag_ids_str)
+    entity_ids = socket.assigns.selected_ids
+
+    MyApp.Ashtags.handle_tags_on_entities(
+      type_str,
+      entity_ids,
+      tag_ids,
+      Api,
+      MyApp.Bird
+    )
+
+    {
+      :noreply,
+      socket
+      |> load_items()
+    }
+  end
+
   # --- selection stuff end
+  @impl true
+  def handle_event("duplicate", %{"id" => row_id}, socket) do
+    record = Api.get!(Bird, row_id)
+
+    Ash.Changeset.for_create(
+      Bird,
+      :create,
+      Map.from_struct(record) |> Map.put(:nickname, record.nickname <> "_" <> rand_part())
+    )
+    |> Api.create()
+    |> case do
+      {:ok, new_rec} ->
+        {:noreply,
+         socket
+         |> push_patch(
+           to:
+             MavuUtils.update_params_in_path(socket.assigns.context.current_url, rec: new_rec.id)
+         )}
+
+      {:error, err} ->
+        err |> MavuUtils.log("mwuits-debug 2023-02-22_18:00 err clred", :info)
+        {:noreply, socket}
+    end
+  end
 end

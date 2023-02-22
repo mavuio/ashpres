@@ -42,6 +42,7 @@ defmodule MyAppBe.BirdLive.BirdEditComponent do
   def load_item(assigns) do
     Bird
     |> Api.get(assigns.rec_id)
+    |> Api.load([:tags])
     |> case do
       {:ok, item} -> item
       _ -> nil
@@ -55,11 +56,12 @@ defmodule MyAppBe.BirdLive.BirdEditComponent do
     {:noreply, assign(socket, form: form)}
   end
 
-  def handle_event("save", _params, socket) do
+  def handle_event("save", params, socket) do
     socket =
       case AshPhoenix.Form.submit(socket.assigns.form) do
         {:ok, result} ->
-          result |> MavuUtils.log("mwuits-debug 2022-11-09_22:37  SAVE clgreen", :info)
+          result
+          |> MyApp.Ashtags.handle_set_tags_field(params["form"]["set_tags"])
 
           socket
           |> assign(item: load_item(socket.assigns))

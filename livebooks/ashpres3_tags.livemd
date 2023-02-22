@@ -1,0 +1,19 @@
+# ashpres3_tags
+
+## Section
+
+```elixir
+alias MyApp.Bird
+
+Bird
+|> Ash.Query.new()
+|> Ash.Query.load([:tags])
+|> MyApp.Api.read!()
+|> Enum.map(fn a -> a |> Map.from_struct() |> Map.take([:id, :name, :tags]) end)
+|> Enum.map(fn a ->
+  a
+  |> Map.update(:tags, "", fn x ->
+    x |> Enum.map(fn a -> a.slug end) |> Enum.join(",")
+  end)
+end)
+```

@@ -5,8 +5,19 @@
     id="list_birds_search"
   />
 
+  <.live_component
+    module={MyAppBe.MavuList.TagfilterComponent}
+    list={@items_filtered}
+    fieldname={:tags}
+    id="list_birds_tagfilter"
+    label="Filter by Tags"
+    class=""
+    target={@myself}
+    context={@context}
+  />
+
   <MyAppBe.MavuList.HandleMultipleItemsComponent.buttonbox selected_ids={@selected_ids}>
-    <div class="flex space-x-4">
+    <div class="flex items-center space-x-4">
       <.mybutton
         phx-click="update_selected_items"
         phx-target={@myself}
@@ -29,6 +40,13 @@
       >
         <Heroicons.trash class="w-5 h-5 mr-4 " />delete
       </.mybutton>
+    </div>
+    <div>
+      <MyAppBe.Components.SetTagsForItems.tagbox
+        selected_ids={@selected_ids}
+        phx_target={@myself}
+        context={@context}
+      />
     </div>
   </MyAppBe.MavuList.HandleMultipleItemsComponent.buttonbox>
 
@@ -85,6 +103,12 @@
                               <%= val %>
                             </.link>
                           </td>
+                        <% {_,val,:tags} -> %>
+                          <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                            <span :for={tag <- val} class="p-1 mr-2 text-xs bg-gray-100 rounded">
+                              <%= tag.slug %>
+                            </span>
+                          </td>
                         <% {_,val,:active} -> %>
                           <td class="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
                             <Heroicons.check :if={val} solid class="w-6 h-6" />
@@ -100,6 +124,9 @@
                         MavuUtils.update_params_in_url(@context.current_url, rec: row.id)
                       }>
                         <Heroicons.pencil class="w-5 h-5" />
+                      </.link>
+                      <.link phx-click="duplicate" phx-value-id={row.id} phx-target={@myself}>
+                        <Heroicons.document_duplicate class="w-5 h-5" />
                       </.link>
                     </td>
                   </tr>

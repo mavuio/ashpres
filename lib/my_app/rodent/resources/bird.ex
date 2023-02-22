@@ -55,6 +55,14 @@ defmodule MyApp.Bird do
     end
   end
 
+  relationships do
+    many_to_many :tags, MyApp.Ashtags.Tag do
+      through(MyApp.BirdToTag)
+      source_attribute_on_join_resource(:bird_id)
+      destination_attribute_on_join_resource(:tag_id)
+    end
+  end
+
   code_interface do
     define_for MyApp.Api
     define :get_by_nickname, action: :read, get_by_identity: :nickname

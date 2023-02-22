@@ -35,8 +35,6 @@ defmodule MyAppBe.TwMaterialInputTheme do
     # label_block = MavuForm.label_block(assigns)
     input_block = InputHelpers.input_block(assigns)
 
-    "MATERIAL_INPUT" |> MavuUtils.log("mwuits-debug 2022-11-29_14:54 clyellow", :info)
-
     InputHelpers.theme_module(assigns).wrap(
       [
         # label_block,

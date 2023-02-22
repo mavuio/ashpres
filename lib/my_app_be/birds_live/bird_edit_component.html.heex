@@ -21,11 +21,10 @@
       >
         <%= input(f, :nickname, label: Ash.Resource.Info.field(Bird, :nickname).description) %>
         <%= input(f, :weight, label: Ash.Resource.Info.field(Bird, :weight).description) %>
-        <div class="sm:flex sm:space-x-4">
+        <div class="my-4 sm:flex sm:space-x-4">
           <%= input(f, :type,
             using: :select,
-            items:
-              Enum.map(Ash.Resource.Info.field(Bird, :type).constraints[:one_of], &{&1, &1}),
+            items: Enum.map(Ash.Resource.Info.field(Bird, :type).constraints[:one_of], &{&1, &1}),
             label: Ash.Resource.Info.field(Bird, :type).description
           ) %>
           <%= input(f, :active,
@@ -33,6 +32,22 @@
             using: :checkbox
           ) %>
         </div>
+
+        <.live_component
+          :let={chosen_tags}
+          module={MyAppBe.AshtagChooserComponent}
+          context={@context}
+          id="add_tags"
+          on_change="add_tags"
+          class="flex items-center space-x-4"
+          tags={@form.params["set_tags"] || @form.data[:tags]}
+        >
+          <input
+            type="hidden"
+            value={chosen_tags |> Enum.map(& &1.id) |> Enum.join(" ")}
+            name="form[set_tags]"
+          />
+        </.live_component>
         <button type="submit" class="invisible" title="needed to submit on Enter">OK</button>
       </.form>
     </article>
