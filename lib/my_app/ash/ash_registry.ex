@@ -3,5 +3,6 @@ defmodule MyApp.AshRegistry do
 
   entries do
     entry MyApp.Rodent
+    entry MyApp.Bird
   end
 end

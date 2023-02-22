@@ -1,8 +1,8 @@
-defmodule MyApp.Rodent do
+defmodule MyApp.Bird do
   use Ash.Resource, data_layer: AshPostgres.DataLayer
 
   postgres do
-    table "rodents"
+    table "birds"
     repo(MyApp.Repo)
   end
 

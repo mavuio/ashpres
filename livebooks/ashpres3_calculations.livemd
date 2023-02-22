@@ -1,0 +1,34 @@
+# ashpres_3
+
+## Section
+
+```elixir
+alias MyApp.Rodent
+import Ash.Query
+
+rec =
+  Rodent
+  |> Ash.Query.limit(1)
+  |> MyApp.Api.read_one!()
+```
+
+```elixir
+rec |> Map.put(:nickname, "Hansi") |> MyApp.Api.load([:full_name])
+```
+
+```elixir
+rec =
+  Rodent
+  |> Ash.Query.limit(1)
+  |> Ash.Query.load([:full_name])
+  |> MyApp.Api.read_one!()
+```
+
+```elixir
+rec =
+  Rodent
+  |> Ash.Query.load([:full_name])
+  |> MyApp.Api.read!()
+  |> Enum.map(&Map.take(&1, ~w(id full_name)a))
+  |> Kino.DataTable.new()
+```

@@ -45,6 +45,7 @@ defmodule MyAppBe.RodentLive.RodentListComponent do
         %{name: :id, label: "ID"},
         %{name: :nickname, label: Ash.Resource.Info.field(Rodent, :nickname).description},
         %{name: :active, label: Ash.Resource.Info.field(Rodent, :active).description},
+        %{name: :weight, label: Ash.Resource.Info.field(Rodent, :weight).description},
         %{name: :type, label: Ash.Resource.Info.field(Rodent, :type).description}
       ],
       api: Api,
@@ -69,7 +70,7 @@ defmodule MyAppBe.RodentLive.RodentListComponent do
         kwlike = "%#{keyword}%"
 
         source
-        |> Ash.Query.filter(fragment("? ilike ?", name, ^kwlike))
+        |> Ash.Query.filter(fragment("? ilike ?", nickname, ^kwlike))
       end
     else
       source
