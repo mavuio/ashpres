@@ -1,0 +1,11 @@
+# ashpres_4_jsonapi
+
+## Section
+
+```elixir
+MyApp.Rodent |> AshJsonApi.Resource.Info.routes()
+```
+
+```elixir
+MyApp.Bird |> AshJsonApi.Resource.Info.routes()
+```

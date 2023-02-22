@@ -1,5 +1,5 @@
 defmodule MyApp.Rodent do
-  use Ash.Resource, data_layer: AshPostgres.DataLayer
+  use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshJsonApi.Resource]
 
   postgres do
     table "rodents"
@@ -66,6 +66,19 @@ defmodule MyApp.Rodent do
 
   def clear_all() do
     MyApp.Repo.delete_all(__MODULE__)
+  end
+
+  json_api do
+    type "rodent"
+
+    routes do
+      base("/rodents")
+
+      get(:read)
+      index(:read)
+      post(:create)
+      # ...
+    end
   end
 
   use Accessible

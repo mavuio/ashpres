@@ -1,5 +1,5 @@
 defmodule MyApp.Bird do
-  use Ash.Resource, data_layer: AshPostgres.DataLayer
+  use Ash.Resource, data_layer: AshPostgres.DataLayer, extensions: [AshJsonApi.Resource]
 
   postgres do
     table "birds"
@@ -54,9 +54,8 @@ defmodule MyApp.Bird do
       pagination offset?: true
     end
 
-    read :read_ecto do
+    read :read_with_tags do
       prepare build(load: [:tags])
-      modify_query {MyApp.ModifyBirdQuery, :modify, []}
     end
   end
 
@@ -75,6 +74,19 @@ defmodule MyApp.Bird do
 
   calculations do
     calculate :full_name, :string, expr(nickname <> " " <> type(type, :string))
+  end
+
+  json_api do
+    type "bird"
+
+    routes do
+      base("/birds")
+
+      get(:read_with_tags)
+      index(:read_with_tags)
+      post(:create)
+      # ...
+    end
   end
 
   def clear_all() do

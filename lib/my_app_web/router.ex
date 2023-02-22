@@ -30,6 +30,12 @@ defmodule MyAppWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/api/json" do
+    pipe_through(:api)
+
+    forward "/", MyAppWeb.JsonapiRouter
+  end
+
   ## Backend routes
 
   scope "/be", MyAppBe do

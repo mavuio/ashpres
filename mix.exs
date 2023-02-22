@@ -64,7 +64,8 @@ defmodule MyApp.MixProject do
       {:ash_postgres, "~> 1.1"},
       {:ash, "~> 2.4.30"},
       {:ash_phoenix, "~> 1.1"},
-      {:happy_with, "~> 1.0"}
+      {:happy_with, "~> 1.0"},
+      {:ash_json_api, "~> 0.31.1"}
 
       # {:mavu_snippets_ui, "~> 0.1.15"},
     ]

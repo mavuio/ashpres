@@ -16,6 +16,10 @@ config :ash, :custom_types, my_decimal: MyApp.Types.MyDecimalAshType
 config :ash, :custom_types, my_localdatetime: MyApp.Types.MyLocaldatetimeAshType
 config :ash, use_all_identities_in_manage_relationship?: false
 
+config :mime, :types, %{
+  "application/vnd.api+json" => ["json"]
+}
+
 # Configures the endpoint
 config :my_app, MyAppWeb.Endpoint,
   url: [host: "localhost"],
