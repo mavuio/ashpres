@@ -8,7 +8,6 @@ defmodule MyAppBe.AshtagsLive do
     {
       :ok,
       socket
-      |> assign(context: MyAppBe.GenericLiveFunctions.create_context_from_params(params, session))
     }
   end
 
