@@ -27,7 +27,7 @@ Ash.Changeset.for_create(Rodent, :create, %{nickname: "jeff", type: :squirrel, a
 ```elixir
 # now you can get by identity as well:
 
-MyApp.Api.get(Rodent, nickname: "jeff")
+MyApp.Api.get!(Rodent, nickname: "jeff") |> Map.from_struct() |> Kino.Tree.new()
 ```
 
 ```elixir
