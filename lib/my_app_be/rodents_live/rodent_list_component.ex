@@ -40,12 +40,13 @@ defmodule MyAppBe.RodentLive.RodentListComponent do
   end
 
   def listconf() do
+    # todo: fetch  field list from Ash.Resource.Info
     %{
       columns: [
         %{name: :id, label: "ID"},
         %{name: :nickname, label: Ash.Resource.Info.field(Rodent, :nickname).description},
         %{name: :active, label: Ash.Resource.Info.field(Rodent, :active).description},
-        %{name: :weight, label: Ash.Resource.Info.field(Rodent, :weight).description},
+        # %{name: :weight, label: Ash.Resource.Info.field(Rodent, :weight).description},
         %{name: :type, label: Ash.Resource.Info.field(Rodent, :type).description}
       ],
       api: Api,

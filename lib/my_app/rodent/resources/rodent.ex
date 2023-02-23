@@ -34,10 +34,10 @@ defmodule MyApp.Rodent do
       description("Type")
     end
 
-    attribute :weight, :decimal do
-      allow_nil?(true)
-      description("Weight (kg)")
-    end
+    # attribute :weight, :decimal do
+    #   allow_nil?(true)
+    #   description("Weight (kg)")
+    # end
 
     create_timestamp(:inserted_at)
     update_timestamp(:updated_at)

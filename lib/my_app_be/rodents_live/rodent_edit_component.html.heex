@@ -20,7 +20,7 @@
         id="editform"
       >
         <%= input(f, :nickname, label: Ash.Resource.Info.field(Rodent, :nickname).description) %>
-        <%= input(f, :weight, label: Ash.Resource.Info.field(Rodent, :weight).description) %>
+        <%!-- <%= input(f, :weight, label: Ash.Resource.Info.field(Rodent, :weight).description) %> --%>
         <div class="sm:flex sm:space-x-4">
           <%= input(f, :type,
             using: :select,
