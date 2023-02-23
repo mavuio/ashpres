@@ -62,10 +62,13 @@ defmodule MyApp.MixProject do
       {:exsync, "~> 0.2", only: :dev},
       {:kino, "~> 0.5.1"},
       {:ash_postgres, "~> 1.1"},
-      {:ash, "~> 2.4.30"},
+      {:ash, "~> 2.6.5"},
       {:ash_phoenix, "~> 1.1"},
       {:happy_with, "~> 1.0"},
-      {:ash_json_api, "~> 0.31.1"}
+      {:ash_json_api, "~> 0.31.1"},
+      {:ash_graphql, "~> 0.22.11"},
+      {:absinthe_plug, "~> 1.5"},
+      {:ash_admin, github: "ash-project/ash_admin", branch: "phoenix-1.7"}
 
       # {:mavu_snippets_ui, "~> 0.1.15"},
     ]

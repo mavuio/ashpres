@@ -2,6 +2,7 @@ defmodule MyAppWeb.Router do
   use MyAppWeb, :router
 
   import MyAppBe.BeAccounts.BeUserAuth
+  import AshAdmin.Router
 
   @default_be_live_hooks [MyAppBe.LiveHooks.InitContext, MyAppBe.LiveHooks.InitMenuSync]
 
@@ -30,10 +31,25 @@ defmodule MyAppWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/" do
+    pipe_through :browser
+
+    ash_admin("/admin")
+  end
+
   scope "/api/json" do
     pipe_through(:api)
 
     forward "/", MyAppWeb.JsonapiRouter
+  end
+
+  scope "/" do
+    forward "/gql", Absinthe.Plug, schema: MyApp.Schema
+
+    forward "/playground",
+            Absinthe.Plug.GraphiQL,
+            schema: MyApp.Schema,
+            interface: :playground
   end
 
   ## Backend routes
