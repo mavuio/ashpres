@@ -47,6 +47,9 @@ defmodule MyApp.Ashtags do
     end
   end
 
+  @doc """
+    sets/removes tags on multiple records (relative)
+  """
   def handle_tags_on_entity(type_str, entity, tag_ids, api, resource, relationship_name \\ :tags)
       when type_str in ["add", "remove"] and is_map(entity) and is_list(tag_ids) and is_atom(api) and
              is_atom(resource) do
@@ -61,6 +64,10 @@ defmodule MyApp.Ashtags do
     |> Ash.Changeset.manage_relationship(relationship_name, tag_ids, opts)
     |> api.update!()
   end
+
+  @doc """
+    sets/removes tags on single record based (absolute)
+  """
 
   def handle_set_tags_field(record, tag_ids, relationship_name \\ :tags)
 

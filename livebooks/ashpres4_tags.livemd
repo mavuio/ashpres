@@ -1,0 +1,44 @@
+# ashpres3_tags
+
+## Section
+
+```elixir
+alias MyApp.Bird
+require Ash.Query
+
+Bird
+|> Ash.Query.new()
+|> Ash.Query.load([:tags])
+|> MyApp.Api.read!()
+|> Enum.map(fn rec ->
+  Map.put(rec, :tagstr, rec.tags |> Enum.map(& &1.slug) |> Enum.join(","))
+end)
+|> Kino.DataTable.new(keys: ~w(id nickname tagstr)a)
+```
+
+```elixir
+Bird
+|> Ash.Query.new()
+|> Ash.Query.filter(fragment("? ilike ?", nickname, "%Ra%"))
+|> MyApp.Api.read!()
+|> Kino.DataTable.new(keys: ~w(id nickname)a)
+```
+
+```elixir
+# query for nested tags:
+
+kw = "%ra%"
+
+Bird
+|> Ash.Query.new()
+|> Ash.Query.load([:tags])
+|> Ash.Query.filter(fragment("? ilike ?", nickname, ^kw))
+# |> Ash.Query.filter(fragment("? ilike ?", tags.slug, "%yel%"))
+|> Ash.Query.filter(tags.slug == "red" or tags.slug == "yellow")
+# |> Ash.Query.filter(tags.slug=="red" and tags.slug=="yellow")
+|> MyApp.Api.read!()
+|> Enum.map(fn rec ->
+  Map.put(rec, :tagstr, rec.tags |> Enum.map(& &1.slug) |> Enum.join(","))
+end)
+|> Kino.DataTable.new(keys: ~w(id nickname tagstr)a)
+```

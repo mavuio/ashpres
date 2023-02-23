@@ -37,10 +37,6 @@ defmodule MyApp.Ashtags.Tag do
     define :get_tags_for_keyword, action: :find_by_keyword, args: [:keyword]
   end
 
-  # relationships do
-  #   has_many :products, MyApp.Stockchanges.Product
-  # end
-
   attributes do
     uuid_primary_key(:id)
 
@@ -52,6 +48,4 @@ defmodule MyApp.Ashtags.Tag do
     create_timestamp :inserted_at
     update_timestamp :updated_at
   end
-
-
 end

@@ -18,7 +18,6 @@ defmodule MyApp.Bird do
     attribute :nickname, :string do
       allow_nil?(false)
       constraints(match: ~r/^[a-z0-9_]+$/)
-
       description("Nickname")
     end
 

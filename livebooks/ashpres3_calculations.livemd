@@ -1,4 +1,4 @@
-# ashpres_3
+# ashpres_3 calculations and aggregates
 
 ## Section
 
@@ -13,22 +13,24 @@ rec =
 ```
 
 ```elixir
+# after adding:
+
+# calculations do
+# 
+#     calculate(:full_name, :string, expr(nickname <> " " <> type(type, :string)))
+# 
+# end
+
+# a) loads locally
 rec |> Map.put(:nickname, "Hansi") |> MyApp.Api.load([:full_name])
 ```
 
 ```elixir
-rec =
-  Rodent
-  |> Ash.Query.limit(1)
-  |> Ash.Query.load([:full_name])
-  |> MyApp.Api.read_one!()
-```
+# c) loads within the data layer (ecto)
 
-```elixir
 rec =
   Rodent
   |> Ash.Query.load([:full_name])
   |> MyApp.Api.read!()
-  |> Enum.map(&Map.take(&1, ~w(id full_name)a))
-  |> Kino.DataTable.new()
+  |> Kino.DataTable.new(keys: ~w(id nickname type full_name)a)
 ```

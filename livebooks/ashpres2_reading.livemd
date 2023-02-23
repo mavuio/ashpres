@@ -1,4 +1,4 @@
-# ashpres_2
+# ashpres_2 identities and read actions
 
 ```elixir
 alias MyApp.Rodent
@@ -14,20 +14,25 @@ alias MyApp.Rodent
 # this should err if executed for existing nickname
 
 Ash.Changeset.for_create(Rodent, :create, %{nickname: "big_jane", type: :beaver})
-|> MyApp.Api.create!()
+|> MyApp.Api.create()
 ```
 
 ```elixir
+# a different - unused name should work:
+
 Ash.Changeset.for_create(Rodent, :create, %{nickname: "jeff", type: :squirrel, active: true})
 |> MyApp.Api.create!()
 ```
 
 ```elixir
-MyApp.Api.get(Rodent, nickname: "big_jane")
+# now you can get by identity as well:
+
+MyApp.Api.get(Rodent, nickname: "jeff")
 ```
 
 ```elixir
 # after adding:
+
 # code_interface do
 #   define_for MyApp.Api
 #   define :get_by_nickname, action: :read, get_by_identity: :nickname
@@ -37,13 +42,15 @@ Rodent.get_by_nickname("big_jane")
 ```
 
 ```elixir
+# atomatically adds !-version as well
+
 Rodent.get_by_nickname!("big_jane")
 ```
 
 ```elixir
 Ash.Query.for_read(Rodent, :read)
 |> MyApp.Api.read!()
-|> Kino.DataTable.new()
+|> Kino.DataTable.new(keys: ~w(id nickname type active)a)
 ```
 
 ```elixir
@@ -52,20 +59,42 @@ require Ash.Query
 Ash.Query.for_read(Rodent, :read)
 |> Ash.Query.filter(active == true)
 |> MyApp.Api.read!()
-|> Kino.DataTable.new()
+|> Kino.DataTable.new(keys: ~w(id nickname type active)a)
 ```
 
 ```elixir
 Ash.Query.for_read(Rodent, :read)
-|> Ash.Query.filter(active: false, type: :squirrel)
+|> Ash.Query.filter(active: true, type: :squirrel)
 |> MyApp.Api.read!()
-|> Kino.DataTable.new()
+|> Kino.DataTable.new(keys: ~w(id nickname type active)a)
 ```
 
 https://ash-hq.org/docs/module/ash/latest/ash-filter
 
 ```elixir
+# after adding:
+
+# actions do
+#
+#   read :read_active do
+#     filter(expr(active == true))
+#   end
+#
+# end
+
 Ash.Query.for_read(Rodent, :read_active)
 |> MyApp.Api.read!()
-|> Kino.DataTable.new()
+|> Kino.DataTable.new(keys: ~w(id nickname type active)a)
+```
+
+```elixir
+# reuse e.g. in code-interface:
+
+# code_interface do
+#
+#   define :get_by_active_nickname, action: :read_active, get_by_identity: :nickname
+#
+# end
+
+Rodent.get_by_active_nickname("big_jane")
 ```

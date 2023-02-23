@@ -60,7 +60,7 @@ defmodule MyApp.MixProject do
       # {:mavu_list, "~> 0.2.8"},
       {:mavu_list, path: "/www/mavu_list", override: true},
       {:exsync, "~> 0.2", only: :dev},
-      {:kino, "~> 0.5.1"},
+      {:kino, "~> 0.8.1"},
       {:ash_postgres, "~> 1.1"},
       {:ash, "~> 2.6.5"},
       {:ash_phoenix, "~> 1.1"},

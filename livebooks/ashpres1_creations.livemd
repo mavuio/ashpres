@@ -1,0 +1,52 @@
+# ashpres_1
+
+```elixir
+MyApp.Repo.delete_all(MyApp.Rodent)
+```
+
+## Section
+
+```elixir
+alias MyApp.Rodent
+# try creation with invalid Name and Type
+Ash.Changeset.for_create(Rodent, :create, %{nickname: "Big Jane", type: :murmele})
+```
+
+```elixir
+# see, no errrors now:
+cs = Ash.Changeset.for_create(Rodent, :create, %{nickname: "big_jane", type: :beaver})
+```
+
+```elixir
+# changeset, ok ? so lets persist it (looks familiar...)
+cs |> MyApp.Api.create()
+```
+
+```elixir
+# lets fetch that record again
+rec = MyApp.Api.get!(Rodent, 25)
+```
+
+```elixir
+# each Ressource is also a valid Ecto-Schema and can be used directly
+# this should load the same record
+rec2 = MyApp.Repo.get!(Rodent, rec.id)
+```
+
+```elixir
+# Q.E.D:
+
+rec == rec2
+```
+
+```elixir
+# try to show fancy custom-action
+
+# actions do
+#   create :create_beaver do
+#     change set_attribute(:type, :beaver)
+#   end
+
+Ash.Changeset.for_create(Rodent, :create_beaver, %{nickname: "cathy"})
+# fail...
+```

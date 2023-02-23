@@ -48,6 +48,10 @@ defmodule MyApp.Rodent do
   end
 
   actions do
+    create :create_beaver do
+      change set_attribute(:type, :beaver)
+    end
+
     read :read_active do
       filter(expr(active == true))
     end
@@ -60,6 +64,7 @@ defmodule MyApp.Rodent do
   code_interface do
     define_for(MyApp.Api)
     define(:get_by_nickname, action: :read, get_by_identity: :nickname)
+    define(:get_by_active_nickname, action: :read_active, get_by_identity: :nickname)
   end
 
   calculations do
