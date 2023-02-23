@@ -14,7 +14,7 @@ alias MyApp.Rodent
 # this should err if executed for existing nickname
 
 Ash.Changeset.for_create(Rodent, :create, %{nickname: "big_jane", type: :beaver})
-|> MyApp.Api.create()
+|> MyApp.Api.create!()
 ```
 
 ```elixir
@@ -44,7 +44,7 @@ Rodent.get_by_nickname("big_jane")
 ```elixir
 # atomatically adds !-version as well
 
-Rodent.get_by_nickname!("big_jane")
+Rodent.get_by_nickname!("big_janle")
 ```
 
 ```elixir
@@ -96,5 +96,5 @@ Ash.Query.for_read(Rodent, :read_active)
 #
 # end
 
-Rodent.get_by_active_nickname("big_jane")
+Rodent.get_by_active_nickname("jeff")
 ```

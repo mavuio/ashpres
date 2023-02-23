@@ -4,7 +4,7 @@ defmodule MyApp.Rodent do
     extensions: [AshJsonApi.Resource, AshGraphql.Resource]
 
   postgres do
-    table "rodents"
+    table("rodents")
     repo(MyApp.Repo)
   end
 
@@ -49,7 +49,7 @@ defmodule MyApp.Rodent do
 
   actions do
     create :create_beaver do
-      change set_attribute(:type, :beaver)
+      change(set_attribute(:type, :beaver))
     end
 
     read :read_active do

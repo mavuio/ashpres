@@ -24,7 +24,7 @@ cs |> MyApp.Api.create()
 
 ```elixir
 # lets fetch that record again
-rec = MyApp.Api.get!(Rodent, 25)
+rec = MyApp.Api.get!(Rodent, 31)
 ```
 
 ```elixir
@@ -46,6 +46,7 @@ rec == rec2
 #   create :create_beaver do
 #     change set_attribute(:type, :beaver)
 #   end
+# end
 
 Ash.Changeset.for_create(Rodent, :create_beaver, %{nickname: "cathy"})
 # fail...
